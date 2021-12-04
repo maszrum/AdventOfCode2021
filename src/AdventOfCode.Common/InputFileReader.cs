@@ -64,4 +64,27 @@ public class InputFileReader
             readLine = await reader.ReadLineAsync();
         }
     }
+    
+    public Task<string> ReadFirstLine()
+    {
+        return IsFileCached 
+            ? Task.FromResult(_cachedLines[0]) 
+            : Read();
+
+        // local
+        async Task<string> Read()
+        {
+            using var reader = new StreamReader(FileName);
+        
+            var readLine = await reader.ReadLineAsync();
+            
+            if (readLine is null)
+            {
+                throw new InvalidOperationException(
+                    "file is empty, cannot read first line");
+            }
+            
+            return readLine;
+        }
+    }
 }
