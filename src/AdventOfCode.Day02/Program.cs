@@ -1,4 +1,4 @@
-﻿var reader = new FileLineByLineReader("input.txt");
+﻿var reader = new InputFileReader("input.txt");
 
 /*
  *  Part one
@@ -12,6 +12,7 @@ var firstCommandsFactory = new Dictionary<string, Func<ISubmarineCommand<Submari
 };
 
 var firstFinalState = await reader
+    .ReadLineByLine()
     .Select(line => line.Split(' '))
     .Select(array => (Command: array[0], Arg: int.Parse(array[1])))
     .AggregateAsync(new SubmarineState(0, 0), (currentState, step) =>
@@ -37,6 +38,7 @@ var secondCommandsFactory = new Dictionary<string, Func<ISubmarineCommand<Submar
 };
 
 var secondFinalState = await reader
+    .ReadLineByLine()
     .Select(line => line.Split(' '))
     .Select(array => (Command: array[0], Arg: int.Parse(array[1])))
     .AggregateAsync(new SubmarineStateWithAim(0, 0, 0), (currentState, step) =>
