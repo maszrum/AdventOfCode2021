@@ -1,6 +1,4 @@
-﻿// ReSharper disable AccessToModifiedClosure
-
-var reader = new InputFileReader("input.txt");
+﻿var reader = new InputFileReader("input.txt");
 
 var crabPositions = (await reader.ReadFirstLine())
     .Split(',')
