@@ -2,11 +2,9 @@
 
 var matrixBuilder = await reader.ReadLineByLine()
     .Select(line => line.Select(character => (int)char.GetNumericValue(character)))
-    .AggregateAsync(new TwoDimensionalMatrixBuilder<int>(), (builder, row) =>
-    {
-        builder.AddRow(row);
-        return builder;
-    });
+    .AggregateAsync(
+        seed: new TwoDimensionalMatrixBuilder<int>(), 
+        accumulator: (builder, row) => builder.AddRow(row));
 
 var matrix = matrixBuilder.Build();
 
