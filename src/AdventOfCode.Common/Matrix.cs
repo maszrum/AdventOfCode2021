@@ -8,14 +8,14 @@ public class Matrix<T> : IEnumerable<IReadOnlyList<T>>
     private readonly IReadOnlyList<Func<Point, Point>> _neighbourTransformations = 
         new Func<Point, Point>[]
         {
-            p => new Point(p.X, p.Y - 1), // top
-            p => new Point(p.X, p.Y + 1), // bottom
-            p => new Point(p.X - 1, p.Y), // left
-            p => new Point(p.X + 1, p.Y), // right
-            p => new Point(p.X - 1, p.Y - 1), // top-left
-            p => new Point(p.X - 1, p.Y + 1), // top-right
-            p => new Point(p.X + 1, p.Y - 1), // bottom-left
-            p => new Point(p.X + 1, p.Y + 1) // bottom-right
+            p => p.ToUp(), // up
+            p => p.ToDown(), // down
+            p => p.ToLeft(), // left
+            p => p.ToRight(), // right
+            p => new Point(p.X - 1, p.Y - 1), // up-left
+            p => new Point(p.X - 1, p.Y + 1), // up-right
+            p => new Point(p.X + 1, p.Y - 1), // down-left
+            p => new Point(p.X + 1, p.Y + 1) // down-right
         };
     
     protected readonly T[][] Values;
@@ -55,16 +55,16 @@ public class Matrix<T> : IEnumerable<IReadOnlyList<T>>
     }
     
     public bool TryGetTopValue(Point point, [NotNullWhen(true)] out T? value) => 
-        TryGetValue(new Point(point.X, point.Y - 1), out value);
+        TryGetValue(point.ToUp(), out value);
 
     public bool TryGetBottomValue(Point point, [NotNullWhen(true)] out T? value) => 
-        TryGetValue(new Point(point.X, point.Y + 1), out value);
+        TryGetValue(point.ToDown(), out value);
 
     public bool TryGetLeftValue(Point point, [NotNullWhen(true)] out T? value) => 
-        TryGetValue(new Point(point.X - 1, point.Y), out value);
+        TryGetValue(point.ToLeft(), out value);
 
     public bool TryGetRightValue(Point point, [NotNullWhen(true)] out T? value) => 
-        TryGetValue(new Point(point.X + 1, point.Y), out value);
+        TryGetValue(point.ToRight(), out value);
 
     public IEnumerable<PointWithValue<T>> GetNeighbours(Point point, bool includeDiagonal = false)
     {
@@ -73,9 +73,9 @@ public class Matrix<T> : IEnumerable<IReadOnlyList<T>>
             .Take(includeDiagonal ? 8 : 4)
             .Select(
                 transformedPoint => TryGetValue(transformedPoint, out var value)
-                    ? new PointWithValue<T>(transformedPoint.X, transformedPoint.Y, value)
-                    : new PointWithValue<T>(int.MaxValue, 0, value!))
-            .Where(pwv => pwv.X != int.MaxValue);
+                    ? transformedPoint.WithValue(value)
+                    : PointWithValue<T>.Invalid())
+            .Where(pwv => !pwv.IsInvalid());
     }
 
     public IEnumerator<IReadOnlyList<T>> GetEnumerator() => 
