@@ -1,8 +1,8 @@
 ﻿namespace AdventOfCode.Common;
 
-public class MutableTwoDimensionalMatrix<T> : TwoDimensionalMatrix<T>
+public class MutableMatrix<T> : Matrix<T>
 {
-    public MutableTwoDimensionalMatrix(T[][] values) : base(values)
+    public MutableMatrix(T[][] values) : base(values)
     {
     }
     

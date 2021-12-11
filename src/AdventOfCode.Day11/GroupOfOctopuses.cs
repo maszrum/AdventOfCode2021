@@ -6,9 +6,9 @@ public class GroupOfOctopuses
 {
     private const int EnergyThatMakesOctopusFlash = 10;
     
-    private readonly MutableTwoDimensionalMatrix<int> _energyLevels;
+    private readonly MutableMatrix<int> _energyLevels;
 
-    public GroupOfOctopuses(MutableTwoDimensionalMatrix<int> energyLevels)
+    public GroupOfOctopuses(MutableMatrix<int> energyLevels)
     {
         _energyLevels = energyLevels;
     }

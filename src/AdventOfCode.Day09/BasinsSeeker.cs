@@ -2,9 +2,9 @@
 
 internal class BasinsSeeker
 {
-    private readonly TwoDimensionalMatrix<int> _matrix;
+    private readonly Matrix<int> _matrix;
     
-    public BasinsSeeker(TwoDimensionalMatrix<int> matrix)
+    public BasinsSeeker(Matrix<int> matrix)
     {
         _matrix = matrix;
     }

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace AdventOfCode.Common;
 
-public class TwoDimensionalMatrix<T> : IEnumerable<IReadOnlyList<T>>
+public class Matrix<T> : IEnumerable<IReadOnlyList<T>>
 {
     private readonly IReadOnlyList<Func<int, int, (int, int)>> _neighbourTransformations = 
         new Func<int, int, (int, int)>[]
@@ -25,7 +25,7 @@ public class TwoDimensionalMatrix<T> : IEnumerable<IReadOnlyList<T>>
     
     protected readonly T[][] Values;
 
-    public TwoDimensionalMatrix(T[][] values)
+    public Matrix(T[][] values)
     {
         if (values.Length == 0)
         {
