@@ -38,9 +38,12 @@ internal class BasinsSeeker
         
         while (pointsToCheck.TryDequeue(out var currentPoint))
         {
-            foreach (var neighbourPoint in GetNeighbours(currentPoint))
+            var neighbours = _matrix.GetNeighbours(currentPoint)
+                .Where(neighbour => !basin.Contains(neighbour));
+            
+            foreach (var neighbourPoint in neighbours)
             {
-                if (neighbourPoint.Value != 9 && !basin.Contains(neighbourPoint))
+                if (neighbourPoint.Value != 9)
                 {
                     basin.AddPoint(neighbourPoint);
                     pointsToCheck.Enqueue(neighbourPoint);
@@ -49,30 +52,5 @@ internal class BasinsSeeker
         }
         
         return basin;
-    }
-    
-    private IEnumerable<PointWithValue<int>> GetNeighbours(PointWithValue<int> point)
-    {
-        var (x, y, _) = point;
-        
-        if (_matrix.TryGetTopValue(x, y, out var topValue))
-        {
-            yield return new PointWithValue<int>(x, y - 1, topValue);
-        }
-        
-        if (_matrix.TryGetBottomValue(x, y, out var bottomValue))
-        {
-            yield return new PointWithValue<int>(x, y + 1, bottomValue);
-        }
-        
-        if (_matrix.TryGetLeftValue(x, y, out var leftValue))
-        {
-            yield return new PointWithValue<int>(x - 1, y, leftValue);
-        }
-        
-        if (_matrix.TryGetRightValue(x, y, out var rightValue))
-        {
-            yield return new PointWithValue<int>(x + 1, y, rightValue);
-        }
     }
 }

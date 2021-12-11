@@ -31,7 +31,7 @@ Console.WriteLine($"The total syntax error score is {corruptedLinesTotalScore}."
 
 var scoreCalculator = new AutocompletionScoreCalculator();
 
-var lines = await reader.ReadLineByLine()
+var scoresAscending = await reader.ReadLineByLine()
     .Select(line =>
     {
         var checker = new BracketSyntaxChecker(line);
@@ -44,8 +44,8 @@ var lines = await reader.ReadLineByLine()
     .OrderBy(score => score)
     .ToArrayAsync();
 
-var middleIndex = lines.Length / 2;
+var middleIndex = scoresAscending.Length / 2;
 
-var middleScore = lines[middleIndex];
+var middleScore = scoresAscending[middleIndex];
 
 Console.WriteLine($"The middle score is {middleScore}.");

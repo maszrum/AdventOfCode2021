@@ -6,28 +6,28 @@ public class MutableMatrix<T> : Matrix<T>
     {
     }
     
-    public void SetValue(int x, int y, T value) => 
-        Values[y][x] = value;
+    public new T this[Point point]
+    {
+        get => GetValue(point);
+        set => SetValue(point, value);
+    }
     
-    public void Transform(Func<int, int, T, T> transformation)
+    public void SetValue(Point point, T value) => 
+        Values[point.Y][point.X] = value;
+    
+    public void Transform(Func<Point, T, T> transformation)
     {
         for (var y = 0; y < Rows; y++)
         {
             for (var x = 0; x < Columns; x++)
             {
-                Values[y][x] = transformation(x, y, Values[y][x]);
+                var point = new Point(x, y);
+                var value = Values[y][x];
+                Values[y][x] = transformation(point, value);
             }
         }
     }
     
-    public void Transform(Func<T, T> transformation)
-    {
-        for (var y = 0; y < Rows; y++)
-        {
-            for (var x = 0; x < Columns; x++)
-            {
-                Values[y][x] = transformation(Values[y][x]);
-            }
-        }
-    }
+    public void Transform(Func<T, T> transformation) => 
+        Transform((_, value) => transformation(value));
 }

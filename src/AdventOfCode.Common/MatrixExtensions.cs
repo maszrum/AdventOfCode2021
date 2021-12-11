@@ -8,20 +8,6 @@ public static class MatrixExtensions
     public static void DecrementEvery(this MutableMatrix<int> matrix) => 
         matrix.Transform(value => --value);
     
-    public static int Increment(this MutableMatrix<int> matrix, int x, int y)
-    {
-        var value = matrix.GetValue(x, y) + 1;
-        matrix.SetValue(x, y, value);
-        return value;
-    }
-
-    public static int Decrement(this MutableMatrix<int> matrix, int x, int y)
-    {
-        var value = matrix.GetValue(x, y) - 1;
-        matrix.SetValue(x, y, value);
-        return value;
-    }
-    
     public static IEnumerable<Point> MatrixWhere<T>(
         this Matrix<T> matrix, Predicate<T> predicate)
     {
@@ -29,10 +15,12 @@ public static class MatrixExtensions
         {
             for (var x = 0; x < matrix.Columns; x++)
             {
-                var value = matrix.GetValue(x, y);
+                var point = new Point(x, y);
+                var value = matrix.GetValue(point);
+                
                 if (predicate(value))
                 {
-                    yield return new Point(x, y);
+                    yield return point;
                 }
             }
         }

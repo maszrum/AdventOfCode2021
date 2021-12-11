@@ -20,10 +20,9 @@ var minima = matrix
     })
     .Where(point =>
     {
-        var (x, y, value) = point;
-        var hasTop = matrix.TryGetTopValue(x, y, out var topValue);
-        var hasBottom = matrix.TryGetBottomValue(x, y, out var bottomValue);
-        return (!hasTop || topValue > value) && (!hasBottom || bottomValue > value);
+        var hasTop = matrix.TryGetTopValue(point, out var topValue);
+        var hasBottom = matrix.TryGetBottomValue(point, out var bottomValue);
+        return (!hasTop || topValue > point.Value) && (!hasBottom || bottomValue > point.Value);
     })
     .ToArray();
 

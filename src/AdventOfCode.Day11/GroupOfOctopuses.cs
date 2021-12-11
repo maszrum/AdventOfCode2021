@@ -36,6 +36,9 @@ public class GroupOfOctopuses
         return flashes;
     }
     
+    private IEnumerable<Point> GetChargedOctopuses() =>
+        _energyLevels.MatrixWhere(level => level >= EnergyThatMakesOctopusFlash);
+    
     private void TriggerChainReaction(IReadOnlyList<Point> octopuses, Action onFlash)
     {
         var octopusJustFlashed = new List<Point>(octopuses);
@@ -46,37 +49,30 @@ public class GroupOfOctopuses
         {
             var neighbours = _energyLevels
                 .GetNeighbours(
-                    x: octopus.X, 
-                    y: octopus.Y, 
+                    point: octopus,
                     includeDiagonal: true)
-                .Select(n => new Point(n.X, n.Y));
-            
-            var neighboursNotFlashed = neighbours
+                .Select(n => new Point(n.X, n.Y))
                 .Where(n => !octopusJustFlashed.Contains(n));
-
-            foreach (var neighbour in neighboursNotFlashed)
+            
+            foreach (var neighbour in neighbours)
             {
-                var energyLevel = _energyLevels.Increment(neighbour.X, neighbour.Y);
+                var energyLevel = ++_energyLevels[neighbour];
                 
                 if (energyLevel >= EnergyThatMakesOctopusFlash)
                 {
                     onFlash();
                     
                     queue.Enqueue(neighbour);
-                    
                     octopusJustFlashed.Add(neighbour);
                 }
             }
         }
 
-        foreach (var (x, y) in octopusJustFlashed)
+        foreach (var octopus in octopusJustFlashed)
         {
-            _energyLevels.SetValue(x, y, 0);
+            _energyLevels[octopus] = 0;
         }
     }
-    
-    private IEnumerable<Point> GetChargedOctopuses() =>
-        _energyLevels.MatrixWhere(level => level >= EnergyThatMakesOctopusFlash);
 
     public override string ToString() => 
         _energyLevels
