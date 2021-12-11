@@ -1,2 +1,2 @@
 ﻿global using AdventOfCode.Common;
-//global using AdventOfCode.Day11;
+global using AdventOfCode.Day11;

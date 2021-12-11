@@ -9,7 +9,7 @@ internal class BasinsSeeker
         _matrix = matrix;
     }
 
-    public IEnumerable<Basin> Find(IEnumerable<Point> minima)
+    public IEnumerable<Basin> Find(IEnumerable<PointWithValue<int>> minima)
     {
         var isInBasin = new bool[_matrix.Rows,_matrix.Columns];
         
@@ -28,12 +28,12 @@ internal class BasinsSeeker
             });
     }
 
-    private Basin FindBasinForPoint(Point point)
+    private Basin FindBasinForPoint(PointWithValue<int> point)
     {
         var basin = new Basin();
         basin.AddPoint(point);
         
-        var pointsToCheck = new Queue<Point>();
+        var pointsToCheck = new Queue<PointWithValue<int>>();
         pointsToCheck.Enqueue(point);
         
         while (pointsToCheck.TryDequeue(out var currentPoint))
@@ -51,28 +51,28 @@ internal class BasinsSeeker
         return basin;
     }
     
-    private IEnumerable<Point> GetNeighbours(Point point)
+    private IEnumerable<PointWithValue<int>> GetNeighbours(PointWithValue<int> point)
     {
         var (x, y, _) = point;
         
         if (_matrix.TryGetTopValue(x, y, out var topValue))
         {
-            yield return new Point(x, y - 1, topValue);
+            yield return new PointWithValue<int>(x, y - 1, topValue);
         }
         
         if (_matrix.TryGetBottomValue(x, y, out var bottomValue))
         {
-            yield return new Point(x, y + 1, bottomValue);
+            yield return new PointWithValue<int>(x, y + 1, bottomValue);
         }
         
         if (_matrix.TryGetLeftValue(x, y, out var leftValue))
         {
-            yield return new Point(x - 1, y, leftValue);
+            yield return new PointWithValue<int>(x - 1, y, leftValue);
         }
         
         if (_matrix.TryGetRightValue(x, y, out var rightValue))
         {
-            yield return new Point(x + 1, y, rightValue);
+            yield return new PointWithValue<int>(x + 1, y, rightValue);
         }
     }
 }

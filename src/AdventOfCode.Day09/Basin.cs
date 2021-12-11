@@ -2,17 +2,17 @@
 
 namespace AdventOfCode.Day09;
 
-internal class Basin : IEnumerable<Point>
+internal class Basin : IEnumerable<PointWithValue<int>>
 {
-    private readonly List<Point> _list = new();
+    private readonly List<PointWithValue<int>> _list = new();
     
     public int Count => _list.Count;
     
-    public void AddPoint(Point point) => _list.Add(point);
+    public void AddPoint(PointWithValue<int> point) => _list.Add(point);
     
-    public bool Contains(Point point) => _list.Contains(point);
+    public bool Contains(PointWithValue<int> point) => _list.Contains(point);
 
-    public IEnumerator<Point> GetEnumerator() => 
+    public IEnumerator<PointWithValue<int>> GetEnumerator() => 
         _list.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => 

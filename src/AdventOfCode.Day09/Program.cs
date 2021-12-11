@@ -16,7 +16,7 @@ var minima = matrix
     .SelectMany((row, y) =>
     {
         var localMinima = new LocalMinimaSeeker().FindMinima(row);
-        return localMinima.Select(x => new Point(x, y, row[x]));
+        return localMinima.Select(x => new PointWithValue<int>(x, y, row[x]));
     })
     .Where(point =>
     {
