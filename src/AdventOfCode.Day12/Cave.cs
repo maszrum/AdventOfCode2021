@@ -2,7 +2,7 @@ namespace AdventOfCode.Day12;
 
 internal class Cave
 {
-    private IReadOnlyCollection<Cave>? _connections;
+    private IEnumerable<Cave>? _connections;
 
     public Cave(string name)
     {
@@ -12,9 +12,9 @@ internal class Cave
         IsEnd = Name == "end";
     }
 
-    public IReadOnlyCollection<Cave> Connections => 
+    public IEnumerable<Cave> Connections => 
         _connections ?? throw new InvalidOperationException(
-            $"set connections by {nameof(SetConnections)} method");
+            $"set connections by {nameof(SetupConnections)} method");
 
     public string Name { get; }
     
@@ -24,7 +24,7 @@ internal class Cave
     
     public bool IsEnd { get; }
     
-    public void SetConnections(IEnumerable<Cave> connections)
+    public void SetupConnections(IEnumerable<Cave> connections)
     {
         if (_connections is not null)
         {
@@ -32,7 +32,7 @@ internal class Cave
                 "method could be called only once");
         }
         
-        _connections = connections.ToArray();
+        _connections = connections;
     }
 
     public override string ToString() => Name;

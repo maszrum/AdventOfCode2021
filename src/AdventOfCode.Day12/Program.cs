@@ -2,11 +2,11 @@
  * INTENTIONALLY NON-RECURSIVE SOLUTION
  */
 
-var reader = new InputFileReader("input.txt");
-
 /*
  * Read caves and connections into graph
  */
+
+var reader = new InputFileReader("input.txt");
 
 var cavePairs = await reader.ReadLineByLine()
     .Select(line => line.Split('-'))
@@ -40,11 +40,7 @@ var caveConnections = caves
     
 Array.ForEach(
     caves, 
-    cave =>
-    {
-        var connectedCaves = caveConnections[cave];
-        cave.SetConnections(connectedCaves);
-    });
+    cave => cave.SetupConnections(caveConnections[cave]));
 
 var startCave = caves.Single(c => c.IsStart);
 
