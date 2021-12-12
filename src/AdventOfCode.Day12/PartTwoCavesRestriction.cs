@@ -2,7 +2,7 @@ namespace AdventOfCode.Day12;
 
 internal class PartTwoCavesRestriction : ICavesRestriction
 {
-    public bool ShouldBeAdded(Cave cave, Path currentPath)
+    public bool ShouldBeVisited(Cave cave, Path currentPath)
     {
         if (!cave.IsSmall || !currentPath.Caves.Contains(cave))
         {

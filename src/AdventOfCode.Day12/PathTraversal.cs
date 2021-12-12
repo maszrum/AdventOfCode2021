@@ -28,7 +28,7 @@ internal class PathTraversal
             return false;
         }
         
-        if (!_restriction.ShouldBeAdded(cave, CurrentPath))
+        if (!_restriction.ShouldBeVisited(cave, CurrentPath))
         {
             return false;
         }
