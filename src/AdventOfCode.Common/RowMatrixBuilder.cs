@@ -1,10 +1,10 @@
 ﻿namespace AdventOfCode.Common;
 
-public class MatrixBuilder<T>
+public class RowMatrixBuilder<T>
 {
     private readonly List<T[]> _rows = new();
     
-    public MatrixBuilder<T> AddRow(IEnumerable<T> row)
+    public RowMatrixBuilder<T> AddRow(IEnumerable<T> row)
     {
         _rows.Add(row.ToArray());
         return this;

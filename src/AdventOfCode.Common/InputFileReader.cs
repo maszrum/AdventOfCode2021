@@ -54,14 +54,24 @@ public class InputFileReader
         
         using var reader = new StreamReader(FileName);
         
-        var readLine = await reader.ReadLineAsync();
-        while (readLine is not null)
+        try
         {
-            _cachedLines.Add(readLine);
+            var readLine = await reader.ReadLineAsync();
+            while (readLine is not null)
+            {
+                _cachedLines.Add(readLine);
             
-            yield return readLine;
+                yield return readLine;
             
-            readLine = await reader.ReadLineAsync();
+                readLine = await reader.ReadLineAsync();
+            }
+        }
+        finally
+        {
+            if (!reader.EndOfStream)
+            {
+                _cachedLines.Clear();
+            }
         }
     }
     

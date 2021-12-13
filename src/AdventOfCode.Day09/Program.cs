@@ -3,7 +3,7 @@
 var matrixBuilder = await reader.ReadLineByLine()
     .Select(line => line.Select(character => (int)char.GetNumericValue(character)))
     .AggregateAsync(
-        seed: new MatrixBuilder<int>(), 
+        seed: new RowMatrixBuilder<int>(), 
         accumulator: (builder, row) => builder.AddRow(row));
 
 var matrix = matrixBuilder.Build();
