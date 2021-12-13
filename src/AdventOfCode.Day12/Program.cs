@@ -57,8 +57,7 @@ Console.WriteLine($"Found {foundPathsPartOne.Count} paths in part one.");
  * Part two
  */
  
- 
 var pathSeekerPartTwo = new PathSeeker(new PartTwoCavesRestriction());
 var foundPathsPartTwo = pathSeekerPartTwo.Find(startCave);
 
-Console.WriteLine($"Found {foundPathsPartTwo.Count} paths in part one.");
+Console.WriteLine($"Found {foundPathsPartTwo.Count} paths in part two.");
