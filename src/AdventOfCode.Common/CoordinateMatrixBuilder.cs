@@ -3,6 +3,14 @@ namespace AdventOfCode.Common;
 public class CoordinateMatrixBuilder<T>
 {
     private readonly List<PointWithValue<T>> _points = new();
+    
+    private T? _defaultValue;
+
+    public CoordinateMatrixBuilder<T> WithDefaultValue(T defaultValue)
+    {
+        _defaultValue = defaultValue;
+        return this;
+    }
 
     public CoordinateMatrixBuilder<T> AddPoint(PointWithValue<T> point)
     {
@@ -36,7 +44,7 @@ public class CoordinateMatrixBuilder<T>
         
         var array = Enumerable
             .Repeat(0, rows)
-            .Select(_ => new T[columns])
+            .Select(_ => Enumerable.Repeat(_defaultValue, columns).ToArray())
             .ToArray();
         
         foreach (var point in _points)
@@ -46,6 +54,6 @@ public class CoordinateMatrixBuilder<T>
             array[y][x] = value;
         }
         
-        return array;
+        return array!;
     }
 }

@@ -8,10 +8,10 @@ public class Matrix<T> : IEnumerable<IReadOnlyList<T>>
     private readonly IReadOnlyList<Func<Point, Point>> _neighbourTransformations = 
         new Func<Point, Point>[]
         {
-            p => p.ToUp(), // up
             p => p.ToDown(), // down
-            p => p.ToLeft(), // left
             p => p.ToRight(), // right
+            p => p.ToLeft(), // left
+            p => p.ToUp(), // up
             p => new Point(p.X - 1, p.Y - 1), // up-left
             p => new Point(p.X - 1, p.Y + 1), // up-right
             p => new Point(p.X + 1, p.Y - 1), // down-left
@@ -38,6 +38,8 @@ public class Matrix<T> : IEnumerable<IReadOnlyList<T>>
     public int Columns => Values[0].Length;
     
     public T GetValue(Point point) => Values[point.Y][point.X];
+    
+    public T GetValue(int x, int y) => Values[y][x];
     
     public bool Exists(Point point) => 
         !(point.Y < 0 || point.Y >= Rows || point.X < 0 || point.X >= Columns);

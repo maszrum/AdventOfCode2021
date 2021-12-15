@@ -4,6 +4,9 @@ public static class PointExtensions
 {
     public static PointWithValue<T> WithValue<T>(this Point point, T value) => 
         new(point.X, point.Y, value);
+    
+    public static Point WithoutValue<T>(this PointWithValue<T> pwv) => 
+        new(pwv.X, pwv.Y);
 
     public static Point ToUp(this Point point, int shift = 1) => 
         point with { Y = point.Y + shift };

@@ -28,4 +28,7 @@ public static class MatrixExtensions
     
     public static IEnumerable<string> ToString<T>(this Matrix<T> matrix, Func<T, string> formatter) => 
         matrix.Select(line => string.Concat(line.Select(formatter)));
+    
+    public static IEnumerable<string> ToString<T>(this Matrix<T> matrix, Func<T, Point, string> formatter) => 
+        matrix.Select((line, y) => string.Concat(line.Select((value, x) => formatter(value, new Point(x, y)))));
 }
