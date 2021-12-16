@@ -13,7 +13,6 @@ internal class LiteralValuePacketDeserializer : IPacketDeserializer
         ReadOnlySpan<bool> bits, out IPacket packet)
     {
         bits = bits[6..]; // skip header
-        // var bitsUsed = 6;
         
         var valueBits = new List<bool[]>();
 
@@ -26,7 +25,6 @@ internal class LiteralValuePacketDeserializer : IPacketDeserializer
             nextExists = bits[0];
             
             bits = bits[5..];
-            // bitsUsed += 5;
             
             if (!nextExists)
             {
@@ -40,11 +38,6 @@ internal class LiteralValuePacketDeserializer : IPacketDeserializer
             .ToInt64();
         
         packet = new LiteralValuePacket(_header, value);
-        
-        // var bytesUsed = (bitsUsed - 1) / 8 + 1;
-        // var bitsUnused = bytesUsed * 8 - bitsUsed;
-        //
-        // return bits[bitsUnused..];
         
         return bits;
     }
