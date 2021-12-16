@@ -2,16 +2,16 @@ namespace AdventOfCode.Day16.Expressions;
 
 internal class PacketToExpressionConverter
 {
-    private static readonly Dictionary<byte, Func<OperatorExpression>> ExpressionFactory = 
+    private static readonly Dictionary<byte, Func<IReadOnlyList<IMathExpression>, IMathExpression>> ExpressionFactory = 
         new()
         {
-            [0] = () => new SumExpression(),
-            [1] = () => new ProductExpression(),
-            [2] = () => new MinimumExpression(),
-            [3] = () => new MaximumExpression(),
-            [5] = () => new GreaterThanExpression(),
-            [6] = () => new LessThanExpression(),
-            [7] = () => new EqualToExpression()
+            [0] = children => new SumExpression(children),
+            [1] = children => new ProductExpression(children),
+            [2] = children => new MinimumExpression(children),
+            [3] = children => new MaximumExpression(children),
+            [5] = children => new GreaterThanExpression(children),
+            [6] = children => new LessThanExpression(children),
+            [7] = children => new EqualToExpression(children)
         };
 
     public IMathExpression Convert(IPacket packet)
@@ -33,13 +33,11 @@ internal class PacketToExpressionConverter
                 $"something is wrong with packet, it has invalid type ID");
         }
         
-        var operatorExpression = ExpressionFactory[packet.Header.TypeId]();
-        
         var children = operatorPacket.SubPackets
             .Select(Convert)
             .ToArray();
         
-        operatorExpression.SetupChildren(children);
+        var operatorExpression = ExpressionFactory[packet.Header.TypeId](children);
         
         return operatorExpression;
     }

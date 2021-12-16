@@ -1,7 +1,14 @@
 namespace AdventOfCode.Day16.Expressions;
 
-internal class MaximumExpression : OperatorExpression
+internal class MaximumExpression : IMathExpression
 {
-    public override long GetValue() => 
-        Children.Max(child => child.GetValue());
+    private readonly IReadOnlyList<IMathExpression> _children;
+
+    public MaximumExpression(IReadOnlyList<IMathExpression> children)
+    {
+        _children = children;
+    }
+
+    public long GetValue() => 
+        _children.Max(child => child.GetValue());
 }

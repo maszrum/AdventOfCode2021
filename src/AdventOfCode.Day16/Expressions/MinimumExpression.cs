@@ -1,7 +1,14 @@
 namespace AdventOfCode.Day16.Expressions;
 
-internal class MinimumExpression : OperatorExpression
+internal class MinimumExpression : IMathExpression
 {
-    public override long GetValue() => 
-        Children.Min(child => child.GetValue());
+    private readonly IReadOnlyList<IMathExpression> _children;
+
+    public MinimumExpression(IReadOnlyList<IMathExpression> children)
+    {
+        _children = children;
+    }
+
+    public long GetValue() => 
+        _children.Min(child => child.GetValue());
 }

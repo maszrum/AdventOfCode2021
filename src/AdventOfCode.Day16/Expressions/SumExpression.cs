@@ -1,7 +1,14 @@
 namespace AdventOfCode.Day16.Expressions;
 
-internal class SumExpression : OperatorExpression
+internal class SumExpression : IMathExpression
 {
-    public override long GetValue() => 
-        Children.Sum(child => child.GetValue());
+    private readonly IReadOnlyList<IMathExpression> _children;
+
+    public SumExpression(IReadOnlyList<IMathExpression> children)
+    {
+        _children = children;
+    }
+
+    public long GetValue() => 
+        _children.Sum(child => child.GetValue());
 }
