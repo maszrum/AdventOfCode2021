@@ -2,18 +2,6 @@ namespace AdventOfCode.Day16.Expressions;
 
 internal class PacketToExpressionConverter
 {
-    private static readonly Dictionary<byte, Func<IReadOnlyList<IMathExpression>, IMathExpression>> ExpressionFactory = 
-        new()
-        {
-            [0] = children => new SumExpression(children),
-            [1] = children => new ProductExpression(children),
-            [2] = children => new MinimumExpression(children),
-            [3] = children => new MaximumExpression(children),
-            [5] = children => new GreaterThanExpression(children),
-            [6] = children => new LessThanExpression(children),
-            [7] = children => new EqualToExpression(children)
-        };
-
     public IMathExpression Convert(IPacket packet)
     {
         if (packet.Header.TypeId == 4)
@@ -37,8 +25,26 @@ internal class PacketToExpressionConverter
             .Select(Convert)
             .ToArray();
         
-        var operatorExpression = ExpressionFactory[packet.Header.TypeId](children);
+        var operatorExpression = InstantiateOperatorExpression(
+            typeId: packet.Header.TypeId, 
+            children: children);
         
         return operatorExpression;
+    }
+    
+    private static IMathExpression InstantiateOperatorExpression(
+        byte typeId, IReadOnlyList<IMathExpression> children)
+    {
+        return typeId switch
+        {
+            0 => new SumExpression(children),
+            1 => new ProductExpression(children),
+            2 => new MinimumExpression(children),
+            3 => new MaximumExpression(children),
+            5 => new GreaterThanExpression(children),
+            6 => new LessThanExpression(children),
+            7 => new EqualToExpression(children),
+            _ => throw new ArgumentOutOfRangeException(nameof(typeId), typeId, "invalid value")
+        };
     }
 }
