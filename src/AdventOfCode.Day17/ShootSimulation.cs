@@ -13,21 +13,21 @@ internal class ShootSimulation
     
     public void SimulateSteps(Vector startingVelocity, Action<Point, bool> stepFunction)
     {
-        using var calculator = new ProbeTrajectoryCalculator(_startingPosition, startingVelocity);
+        var probeState = new ProbeTrajectoryState(_startingPosition, startingVelocity);
     
         do
         {
-            calculator.CalculateNextPosition();
-            var hit = _trench.IsPointInside(calculator.CurrentPosition);
+            probeState.MoveToNextPosition();
+            var hit = _trench.IsPointInside(probeState.CurrentPosition);
 
-            stepFunction(calculator.CurrentPosition, hit);
+            stepFunction(probeState.CurrentPosition, hit);
             
             if (hit)
             {
                 break;
             }
         }
-        while (IsHitPossible(calculator.CurrentPosition));
+        while (IsHitPossible(probeState.CurrentPosition));
     }
     
     private bool IsHitPossible(Point probePosition) =>
