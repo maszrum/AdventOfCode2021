@@ -6,6 +6,9 @@ public readonly record struct Point(int X, int Y)
     
     public static Point Invalid => new(int.MaxValue, int.MinValue);
     
-    public bool IsInvalid() => 
-        X == int.MaxValue && Y == int.MinValue;
+    public static bool IsInvalid(Point point) => 
+        point.X == int.MaxValue && point.Y == int.MinValue;
+    
+    public static bool IsValid(Point point) => 
+        !IsInvalid(point);
 }

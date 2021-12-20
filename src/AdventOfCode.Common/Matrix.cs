@@ -5,19 +5,6 @@ namespace AdventOfCode.Common;
 
 public class Matrix<T> : IEnumerable<IReadOnlyList<T>>
 {
-    private readonly IReadOnlyList<Func<Point, Point>> _neighbourTransformations = 
-        new Func<Point, Point>[]
-        {
-            p => p.ToDown(), // down
-            p => p.ToRight(), // right
-            p => p.ToLeft(), // left
-            p => p.ToUp(), // up
-            p => new Point(p.X - 1, p.Y - 1), // up-left
-            p => new Point(p.X - 1, p.Y + 1), // up-right
-            p => new Point(p.X + 1, p.Y - 1), // down-left
-            p => new Point(p.X + 1, p.Y + 1) // down-right
-        };
-    
     protected readonly T[][] Values;
 
     public Matrix(T[][] values)
@@ -70,14 +57,13 @@ public class Matrix<T> : IEnumerable<IReadOnlyList<T>>
 
     public IEnumerable<PointWithValue<T>> GetNeighbours(Point point, bool includeDiagonal = false)
     {
-        return _neighbourTransformations
-            .Select(transformation => transformation(point))
-            .Take(includeDiagonal ? 8 : 4)
+        return point
+            .GetNeighbours(includeDiagonal)
             .Select(
-                transformedPoint => TryGetValue(transformedPoint, out var value)
-                    ? transformedPoint.WithValue(value)
+                neighbour => TryGetValue(neighbour, out var value)
+                    ? neighbour.WithValue(value)
                     : PointWithValue<T>.Invalid())
-            .Where(pwv => !pwv.IsInvalid());
+            .Where(PointWithValue.IsValid);
     }
 
     public IEnumerator<IReadOnlyList<T>> GetEnumerator() => 

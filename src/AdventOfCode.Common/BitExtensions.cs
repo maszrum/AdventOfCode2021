@@ -1,6 +1,8 @@
-namespace AdventOfCode.Day16;
+using System.Collections;
 
-internal static class BitExtensions
+namespace AdventOfCode.Common;
+
+public static class BitExtensions
 {
     public static ReadOnlySpan<byte> ToBytes(this ReadOnlySpan<bool> bits)
     {
